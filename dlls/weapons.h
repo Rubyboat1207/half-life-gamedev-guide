@@ -73,6 +73,7 @@ public:
 // weapon weight factors (for auto-switching)   (-1 = noswitch)
 #define CROWBAR_WEIGHT 0
 #define GLOCK_WEIGHT 10
+#define WATERSHOOTER_WEIGHT 20
 #define PYTHON_WEIGHT 15
 #define MP5_WEIGHT 15
 #define SHOTGUN_WEIGHT 15
@@ -106,6 +107,7 @@ public:
 
 //#define CROWBAR_MAX_CLIP		WEAPON_NOCLIP
 #define GLOCK_MAX_CLIP 17
+#define WATERSHOOTER_MAX_CLIP 5
 #define PYTHON_MAX_CLIP 6
 #define MP5_MAX_CLIP 50
 #define MP5_DEFAULT_AMMO 25
@@ -123,6 +125,7 @@ public:
 
 // the default amount of ammo that comes with each gun when it spawns
 #define GLOCK_DEFAULT_GIVE 17
+#define WATERSHOOTER_DEFAULT_GIVE 7
 #define PYTHON_DEFAULT_GIVE 6
 #define MP5_DEFAULT_GIVE 25
 #define MP5_DEFAULT_AMMO 25
@@ -160,6 +163,8 @@ typedef enum
 	BULLET_PLAYER_357,		// python
 	BULLET_PLAYER_BUCKSHOT, // shotgun
 	BULLET_PLAYER_CROWBAR,	// crowbar swipe
+	BULLET_PLAYER_WATER,	// watershooter
+
 
 	BULLET_MONSTER_9MM,
 	BULLET_MONSTER_MP5,
@@ -520,6 +525,45 @@ private:
 	unsigned short m_usFireGlock1;
 	unsigned short m_usFireGlock2;
 };
+
+enum watershooter_e
+{
+	WATERSHOOTER_IDLE1 = 0,
+	WATERSHOOTER_SHOOT,
+	WATERSHOOTER_RELOAD
+};
+
+class CWaterShooter : public CBasePlayerWeapon
+{
+public:
+	void Spawn() override;
+	void Precache() override;
+	int iItemSlot() override { return 2; }
+	bool GetItemInfo(ItemInfo* p) override;
+
+	void PrimaryAttack() override;
+	void GlockFire(float flSpread, float flCycleTime, bool fUseAutoAim);
+	bool Deploy() override;
+	void Reload() override;
+	void WeaponIdle() override;
+
+	bool UseDecrement() override
+	{
+#if defined(CLIENT_WEAPONS)
+		return true;
+#else
+		return false;
+#endif
+	}
+
+private:
+	int m_iShell;
+
+
+	unsigned short m_usFireWaterShooter1;
+	unsigned short m_usFireWaterShooter2;
+};
+
 
 enum crowbar_e
 {

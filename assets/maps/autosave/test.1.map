@@ -12,6 +12,7 @@
 "mapversion" "220"
 "wad" "valve/xeno.wad;valve/halflife.wad;valve/gfx.wad;valve/tempdecal.wad"
 "_generator" "J.A.C.K. 1.1.3773 Freeware (vpHalfLife)"
+"_tb_mod" "turningpoints"
 // brush 0
 {
 ( 256 -256 160 ) ( 256 -256 0 ) ( 256 256 160 ) C1A0_WX [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1

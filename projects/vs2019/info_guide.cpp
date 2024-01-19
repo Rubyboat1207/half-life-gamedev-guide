@@ -32,14 +32,14 @@ void CInfoGuide::Spawn()
 
 	UTIL_SetSize(pev, {-52, -52, -52}, {52, 52, 52});
 
-	InitBoneControllers();
 	UTIL_SetOrigin(pev, pev->origin);
 	
 	pev->nextthink = gpGlobals->time + 0.5;
 	SetThink(&CInfoGuide::GuideThink);
 
+	pev->frame = 0;
+	ResetSequenceInfo();
 	pev->sequence = 0;
-
 
 	ALERT(at_console, "ready");
 }
@@ -54,7 +54,7 @@ void CInfoGuide::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 }
 
 void CInfoGuide::GuideThink() {
-	ALERT(at_console, "THINKING remain: %f, time: %f\n", m_animationTimer, pev->health);
+	//ALERT(at_console, "THINKING remain: %f, time: %f\n", m_animationTimer, pev->health);
 
 	if (m_animationTimer > 0) {
 		m_animationTimer -= 0.1;

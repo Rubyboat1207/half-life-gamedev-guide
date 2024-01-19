@@ -50,6 +50,7 @@ bool g_irunninggausspred = false;
 Vector previousorigin;
 
 // HLDM Weapon placeholder entities.
+CWaterShooter g_WaterShooter;
 CGlock g_Glock;
 CCrowbar g_Crowbar;
 CPython g_Python;
@@ -464,6 +465,7 @@ void HUD_InitClientWeapons()
 	HUD_PrepEntity(&g_Satchel, &player);
 	HUD_PrepEntity(&g_Tripmine, &player);
 	HUD_PrepEntity(&g_Snark, &player);
+	HUD_PrepEntity(&g_WaterShooter, &player);
 }
 
 /*
@@ -585,6 +587,10 @@ void HUD_WeaponsPostThink(local_state_s* from, local_state_s* to, usercmd_t* cmd
 
 	case WEAPON_SNARK:
 		pWeapon = &g_Snark;
+		break;
+
+	case WEAPON_WATERSHOOTER:
+		pWeapon = &g_WaterShooter;
 		break;
 	}
 
