@@ -100,7 +100,6 @@ public:
 	bool IsObserver() { return 0 != pev->iuser1; }
 
 	int random_seed; // See that is shared between client & server for shared weapons code
-
 	int m_iPlayerSound;		// the index of the sound list slot reserved for this player
 	int m_iTargetVolume;	// ideal sound volume.
 	int m_iWeaponVolume;	// how loud the player's weapon is right now.
@@ -204,6 +203,9 @@ public:
 	float m_flNextDecalTime;  // next time this player can spray a decal
 
 	char m_szTeamName[TEAM_NAME_LENGTH];
+
+	float standStillTime = 0; // my mod stuff
+	bool hasEverMoved = false;
 
 	void Spawn() override;
 	void Pain();

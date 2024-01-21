@@ -22,6 +22,7 @@
 
 #include <limits>
 #include <algorithm>
+#include <string>
 
 #include "extdll.h"
 #include "util.h"
@@ -55,6 +56,8 @@ extern edict_t* EntSelectSpawnPoint(CBaseEntity* pPlayer);
 #define TRAIN_MEDIUM 0x03
 #define TRAIN_FAST 0x04
 #define TRAIN_BACK 0x05
+
+#define passedValue(prev, cur, value) prev < value && cur > value
 
 #define FLASH_DRAIN_TIME 1.2  //100 units/3 minutes
 #define FLASH_CHARGE_TIME 0.2 // 100 units/20 seconds  (seconds per unit)
@@ -2500,9 +2503,11 @@ void CBasePlayer::UpdatePlayerSound()
 	//ALERT ( at_console, "%d/%d\n", iVolume, m_iTargetVolume );
 }
 
-
+#define MAX_STILL_TIME 10
+#define WARN_TIME 5
 void CBasePlayer::PostThink()
 {
+	
 	if (g_fGameOver)
 		goto pt_end; // intermission or finale
 
@@ -2660,6 +2665,33 @@ pt_end:
 
 	// Track button info so we can detect 'pressed' and 'released' buttons next frame
 	m_afButtonLast = pev->button;
+	if (std::abs(pev->velocity.x) > 0 || std::abs(pev->velocity.y) > 0)
+	{
+		standStillTime = 0;
+		hasEverMoved = true;
+	}
+	else {
+		if (hasEverMoved) {
+			float old_stand_still_time = standStillTime;
+			standStillTime += gpGlobals->frametime;
+			for (int i = MAX_STILL_TIME; i <= MAX_STILL_TIME + WARN_TIME; i++)
+			{
+				if (passedValue(old_stand_still_time, standStillTime, i))
+				{
+					static char reset_message[32];
+					std::sprintf(reset_message, "map will reset in %i", MAX_STILL_TIME + WARN_TIME - i);
+					UTIL_HudMessageAll({-1, -1, 0, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0.8f, 0, 2}, reset_message);
+				}
+			}
+
+			if (standStillTime > MAX_STILL_TIME + WARN_TIME)
+			{
+				CHANGE_LEVEL("test", 0);
+			}
+		}
+		
+	}
+	
 }
 
 

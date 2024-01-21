@@ -39,6 +39,7 @@ void CWaterShooter::Precache()
 	PRECACHE_MODEL("models/water_shooter.mdl");
 	PRECACHE_MODEL("models/v_water_shooter.mdl");
 
+
 	m_iShell = PRECACHE_MODEL("models/shell.mdl"); // brass shell
 
 	PRECACHE_SOUND("items/9mmclip1.wav");
