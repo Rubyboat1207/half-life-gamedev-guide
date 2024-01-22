@@ -209,6 +209,8 @@ char* EV_HLDM_DamageDecal(physent_t* pe)
 	static char decalname[32];
 	int idx;
 
+	
+
 	if (pe->classnumber == 1)
 	{
 		idx = gEngfuncs.pfnRandomLong(0, 2);
@@ -234,27 +236,30 @@ void EV_HLDM_GunshotDecalTrace(pmtrace_t* pTrace, char* decalName)
 	gEngfuncs.pEfxAPI->R_BulletImpactParticles(pTrace->endpos);
 
 	iRand = gEngfuncs.pfnRandomLong(0, 0x7FFF);
-	if (iRand < (0x7fff / 2)) // not every bullet makes a sound.
-	{
-		switch (iRand % 5)
+	if (decalName != "water") {
+		if (iRand < (0x7fff / 2)) // not every bullet makes a sound.
 		{
-		case 0:
-			gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric1.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		case 1:
-			gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric2.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		case 2:
-			gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric3.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		case 3:
-			gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric4.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
-			break;
-		case 4:
-			gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric5.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
-			break;
+			switch (iRand % 5)
+			{
+			case 0:
+				gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric1.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			case 1:
+				gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric2.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			case 2:
+				gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric3.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			case 3:
+				gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric4.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			case 4:
+				gEngfuncs.pEventAPI->EV_PlaySound(-1, pTrace->endpos, 0, "weapons/ric5.wav", 1.0, ATTN_NORM, 0, PITCH_NORM);
+				break;
+			}
 		}
 	}
+	
 
 	pe = gEngfuncs.pEventAPI->EV_GetPhysent(pTrace->ent);
 
@@ -282,7 +287,7 @@ void EV_HLDM_DecalGunshot(pmtrace_t* pTrace, int iBulletType)
 		{
 		case BULLET_PLAYER_WATER:
 		{
-			EV_HLDM_GunshotDecalTrace(pTrace, EV_HLDM_DamageDecal(pe));
+			EV_HLDM_GunshotDecalTrace(pTrace, "rb_splash");
 			break;
 		}
 		case BULLET_PLAYER_9MM:
@@ -479,7 +484,7 @@ void EV_FireWaterShooter1(event_args_t* args)
 
 	VectorCopy(forward, vecAiming);
 
-	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, &tracerCount[idx - 1], args->fparam1, args->fparam2);
+	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_WATER, 0, &tracerCount[idx - 1], args->fparam1, args->fparam2);
 }
 
 void EV_FireWaterShooter2(event_args_t* args)
@@ -525,7 +530,7 @@ void EV_FireWaterShooter2(event_args_t* args)
 
 	VectorCopy(forward, vecAiming);
 
-	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, &tracerCount[idx - 1], args->fparam1, args->fparam2);
+	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_WATER, 0, &tracerCount[idx - 1], args->fparam1, args->fparam2);
 }
 
 //======================
